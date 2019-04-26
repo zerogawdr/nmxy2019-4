@@ -6,7 +6,7 @@ let a={}是对象字面量的表达形式 是一个简写  真正应该是 let a
 
 每new Object 就等于创建了一个新对象 就算对象里的属性方法都一样 也是不相等的是独立的
 
-object的本质是function
+object的本质是function /
 
 let b=new Function('a',b','a'+'b')
 console.log(b(1,2))  //输出3 
