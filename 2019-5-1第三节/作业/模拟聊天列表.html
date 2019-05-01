@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <title>Document</title>
+    <style>
+        .space {
+            margin-bottom: 10px;
+        }
+
+        .content {
+            height: 500px;
+            overflow-y: auto;
+        }
+
+        .content li {
+            display: flex;
+            justify-content: space-between
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app container ">
+
+        <ul class="list-group content ">
+            <li v-show='listMsg.length>0?true:false' class="list-group-item" v-for="(item,index) in listMsg">
+                {{index+1}}.{{item}}
+                <button type="button" @click="removeMsg(index)" class="btn btn-danger">删除</button>
+            </li>
+            <li v-show='listMsg.length==0' class="list-group-item list-group-item-warning">
+                留言板暂无消息
+            </li>
+        </ul>
+
+
+        <textarea v-model="msg" @keyup.esc="msg=''" @keyup.ctrl.enter="addMsg(msg)"
+            placeholder="请输入内容,Ctrl+Enter发送信息,Esc清除输入信息" class="form-control space" style="resize: none"
+            rows="4"></textarea>
+        <button type="button" @click="addMsg(msg)" class="btn btn-success btn-block">确定</button>
+
+    </div>
+</body>
+
+<script>
+    new Vue({
+        el: '.app',
+        data() {
+            return {
+                msg: '',
+                listMsg: []
+            }
+        },
+        methods: {
+            addMsg(msg) {
+                if (msg.trim() == '') return
+                this.listMsg.unshift(msg)
+                this.msg = ''
+            },
+            removeMsg(i) {
+                if (confirm("你确定要删除吗")) {
+                    this.listMsg.splice(i, 1)
+                }
+            }
+        },
+    })
+</script>
+
+</html>
