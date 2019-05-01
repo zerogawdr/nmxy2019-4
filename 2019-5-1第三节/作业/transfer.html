@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
     <link rel="stylesheet" href="./css//transferStyle.css">
+    <link rel="stylesheet" href="https://daneden.github.io/animate.css/animate.min.css">
     <title>Document</title>
 </head>
 
@@ -17,7 +18,10 @@
             <dl class="transferBox">
                 <dt><label><input @click="checkedAllLeft(selectAll1)" v-model="selectAll1" type="checkbox">全选 </label>
                 </dt>
-                <dd v-for='item in arr1'><label><input type="checkbox" v-model="item.checked">{{item.name}}</label>
+                <dd class="animated slideInUp" v-for='item in arr1'>
+                    <label>
+                        <input type="checkbox" v-model="item.checked">{{item.name}}
+                    </label>
                 </dd>
             </dl>
             <div class="changeBtn">
@@ -27,7 +31,11 @@
             <dl class="transferBox">
                 <dt><label><input @click="checkedAllRight(selectAll2)" v-model="selectAll2" type="checkbox">全选</label>
                 </dt>
-                <dd v-for='item in arr2'><label><input type="checkbox" v-model="item.checked">{{item.name}}</label></dd>
+                <dd class="animated slideInUp" v-for='item in arr2'>
+                    <label>
+                        <input type="checkbox" v-model="item.checked">{{item.name}}
+                    </label>
+                </dd>
             </dl>
         </div>
     </div>
@@ -69,7 +77,6 @@
                         checked: false
                     }
                 ],
-
             }
         },
         methods: {
@@ -131,24 +138,29 @@
                 }
             },
             selectAll1() {
-                if (this.arr1.every(item => item.checked)) {
-                    //判断arr1里的每一项的checked是不是都是true 是的话返回true 有一项不是true则返回false
-                    return true
+                if (this.arr1.length > 0) { //如果arr1的数组长度大于0说明里面有数据
+                    if (this.arr1.every(item => item.checked)) {
+                        //判断arr1里的每一项的checked是不是都是true 是的话返回true 有一项不是true则返回false
+                        return true
+                    } else {
+                        return false
+                    }
                 } else {
-                    return false
+                    return false //没数据就返回false取消全选的勾 防止点击全选选中切换时勾不取消
                 }
             },
             selectAll2() {
-                if (this.arr2.every(item => item.checked)) {
-                    return true
+                if (this.arr2.length > 0) {
+                    if (this.arr2.every(item => item.checked)) {
+                        return true
+                    } else {
+                        return false
+                    }
                 } else {
                     return false
                 }
             }
         },
-
-
-
     })
 </script>
 
