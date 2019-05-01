@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <link rel="stylesheet" href="./css//transferStyle.css">
+    <title>Document</title>
+</head>
+
+
+<body>
+    <div class="app">
+        <div class="container">
+            <dl class="transferBox">
+                <dt><label><input @click="checkedAllLeft(selectAll1)" v-model="selectAll1" type="checkbox">全选 </label>
+                </dt>
+                <dd v-for='item in arr1'><label><input type="checkbox" v-model="item.checked">{{item.name}}</label>
+                </dd>
+            </dl>
+            <div class="changeBtn">
+                <input class="btnLeft" @click='moveToRight' :disabled='btnLeftStatus' type="button" value=">">
+                <input class="btnRight" @click='moveToLeft' :disabled='btnRightStatus' type="button" value="<">
+            </div>
+            <dl class="transferBox">
+                <dt><label><input @click="checkedAllRight(selectAll2)" v-model="selectAll2" type="checkbox">全选</label>
+                </dt>
+                <dd v-for='item in arr2'><label><input type="checkbox" v-model="item.checked">{{item.name}}</label></dd>
+            </dl>
+        </div>
+    </div>
+</body>
+<script>
+    new Vue({
+        el: ".app",
+        data() {
+            return {
+                arr1: [{
+                        name: '选项1',
+                        checked: false
+                    },
+                    {
+                        name: '选项2',
+                        checked: false
+                    },
+                    {
+                        name: '选项3',
+                        checked: false
+                    }, {
+                        name: '选项4',
+                        checked: false
+                    }
+                ],
+                arr2: [{
+                        name: '选项5',
+                        checked: false
+                    },
+                    {
+                        name: '选项6',
+                        checked: false
+                    },
+                    {
+                        name: '选项7',
+                        checked: false
+                    }, {
+                        name: '选项8',
+                        checked: false
+                    }
+                ],
+                // selectAll1: false,
+                selectAll2: false
+            }
+        },
+        methods: {
+            //左边全选
+            checkedAllLeft(val) {
+                // console.log(val) //这里全选按钮点击第一次未false 第二次为true 很奇怪  下面只能取反了
+                this.arr1.forEach(item => {
+                    item.checked = !val //点击全选后把arr1数组里每一项的checked状态改为传过来的状态的相反状态就是true 
+                })
+            },
+            //右边全选
+            checkedAllRight(val) {
+                this.arr2.forEach(item => {
+                    item.checked = !val
+                })
+            },
+            moveToRight() {
+                let Selected = this.arr1.filter(item => item.checked) //过滤出checked为true 选中的
+                const theRest = this.arr1.filter(item => !item.checked) //过滤出checked为flase 未选中的
+                this.arr1 = theRest //未选中的赋值给arr1
+                Selected = Selected.map(item => {
+                    item.checked = false //用map生成一个和原数组长度一样的数组checke状态改为false重新赋值给Selected
+                    return item
+                })
+                this.arr2.push.apply(this.arr2, Selected) //把Selected的内容与arr2合并
+                this.selectAll1 = false //把全选状态改为false
+
+            },
+            moveToLeft() {
+                let Selected = this.arr2.filter(item => item.checked) //过滤出checked为true 选中的
+                const theRest = this.arr2.filter(item => !item.checked) //过滤出checked为flase 未选中的
+                this.arr2 = theRest //未选中的赋值给arr1
+                Selected = Selected.map(item => {
+                    item.checked = false
+                    return item
+                })
+                this.arr1.push.apply(this.arr1, Selected)
+                this.selectAll2 = false
+            }
+        },
+        computed: {
+            //左边按钮状态
+            btnLeftStatus() {
+                if (this.arr1.some(item => item.checked)) { //找出arr1中状态为true的返回false控制disabled的关闭
+                    return false
+                } else {
+                    return true //否则让disabled开启
+                }
+            },
+            //右边按钮状态
+            btnRightStatus() {
+                if (this.arr2.some(item => item.checked)) {
+                    return false
+                } else {
+                    return true
+                }
+            },
+            selectAll1() {
+                if (this.arr1.every(item => item
+                    .checked)) { //判断arr1里的每一项的checked是不是都是true 是的话返回true 有一项不是true则返回false
+                    return true
+                } else {
+                    return false
+                }
+            },
+            selectAll2() {
+                if (this.arr2.every(item => item.checked)) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        },
+
+
+
+    })
+</script>
+
+</html>
