@@ -69,8 +69,7 @@
                         checked: false
                     }
                 ],
-                // selectAll1: false,
-                selectAll2: false
+
             }
         },
         methods: {
@@ -87,6 +86,7 @@
                     item.checked = !val
                 })
             },
+            //向右添加
             moveToRight() {
                 let Selected = this.arr1.filter(item => item.checked) //过滤出checked为true 选中的
                 const theRest = this.arr1.filter(item => !item.checked) //过滤出checked为flase 未选中的
@@ -96,19 +96,21 @@
                     return item
                 })
                 this.arr2.push.apply(this.arr2, Selected) //把Selected的内容与arr2合并
-                this.selectAll1 = false //把全选状态改为false
+
+
 
             },
+            //向左添加
             moveToLeft() {
                 let Selected = this.arr2.filter(item => item.checked) //过滤出checked为true 选中的
                 const theRest = this.arr2.filter(item => !item.checked) //过滤出checked为flase 未选中的
-                this.arr2 = theRest //未选中的赋值给arr1
+                this.arr2 = theRest //未选中的赋值给arr2
                 Selected = Selected.map(item => {
                     item.checked = false
                     return item
                 })
                 this.arr1.push.apply(this.arr1, Selected)
-                this.selectAll2 = false
+
             }
         },
         computed: {
@@ -129,8 +131,8 @@
                 }
             },
             selectAll1() {
-                if (this.arr1.every(item => item
-                    .checked)) { //判断arr1里的每一项的checked是不是都是true 是的话返回true 有一项不是true则返回false
+                if (this.arr1.every(item => item.checked)) {
+                    //判断arr1里的每一项的checked是不是都是true 是的话返回true 有一项不是true则返回false
                     return true
                 } else {
                     return false
