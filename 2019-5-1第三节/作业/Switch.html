@@ -31,7 +31,8 @@
         }
 
         .switch.active {
-            background-color: #2d8cf0
+            background-color: #2d8cf0;
+
         }
 
         .switch .switch_ball {
@@ -42,7 +43,8 @@
             border-radius: 18px;
             background-color: #fff;
             cursor: pointer;
-            transition: transform .3s ease-in
+            transition: transform .3s ease-in;
+            animation: left .3s ease-in;
         }
 
         .switch.active .switch_ball {
@@ -65,6 +67,25 @@
                 width: 22px;
                 /* transform: translateX(22px); */
             }
+
+        }
+
+        @keyframes left {
+            0% {
+                width: 22px;
+                /* transform: translateX(0px) */
+            }
+
+            50% {
+                width: 29px;
+                /* transform: translateX(11px) */
+            }
+
+            100% {
+                width: 22px;
+                /* transform: translateX(22px); */
+            }
+
         }
     </style>
 </head>
