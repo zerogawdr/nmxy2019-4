@@ -26,26 +26,26 @@
             condensed: Boolean
         },
         template: `
-      <table 
-      :class="[
-          {
-              'table':table
-              table-striped':striped,
-              'table-bordered':bordered,
-              'table-hover':hover,
-              'table-condensed':condensed
-            }
-          ]">
-        <tbody>
-            <tr>
-                 <th v-for="item in colums ">{{item}}</th>
-            </tr>
-            <tr v-for='item in data'>
-                  <td v-for='msg in item '>{{msg}}</td>
-              </tr>
-        </tbody>
-      </table>
-     `
+            <table 
+            :class="[
+                {
+                    'table':table,
+                    'table-striped':striped,
+                    'table-bordered':bordered,
+                    'table-hover':hover,
+                    'table-condensed':condensed
+                    }
+                ]">
+                <tbody>
+                    <tr>
+                        <th v-for="item in colums ">{{item}}</th>
+                    </tr>
+                    <tr v-for='item in data'>
+                        <td v-for='msg in item '>{{msg}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            `
     })
     new Vue({
         el: '.app',
@@ -69,7 +69,6 @@
                     ['2', 'Jacob', 'Thornton', '@fat'],
                     ['3', 'Larry', 'the Bird', '@twitter'],
                 ]
-
             }
         },
 
