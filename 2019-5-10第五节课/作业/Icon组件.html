@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="app">
+
+
+    </div>
+</body>
+
+
+<script>
+    const Icon = {
+        props: {
+            name: {
+                type: String,
+                required: true
+            },
+            size: Number,
+            color: String
+        },
+        template: `
+ 
+        <span :style="{'font-size':size+'px','color':color}" :class="['glyphicon','glyphicon-'+name]">
+            
+        </span>
+     
+    `
+    }
+    new Vue({
+        el: '.app',
+        data() {
+            return {
+
+            }
+        },
+        template: `
+        <div class='app'>
+            <Icon name='search' size='30' color='pink' />
+        </div>
+        `,
+        components: {
+            Icon: Icon
+        }
+    })
+</script>
+
+</html>

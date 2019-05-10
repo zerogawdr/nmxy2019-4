@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="app"></div>
+</body>
+
+<script>
+    Vue.component('Table', {
+        props: {
+            colums: [Object, Array],
+            data: Array,
+            table: Boolean,
+            striped: Boolean,
+            bordered: Boolean,
+            hover: Boolean,
+            condensed: Boolean
+        },
+        template: `
+      <table 
+      :class="[
+          {
+              'table':table
+              table-striped':striped,
+              'table-bordered':bordered,
+              'table-hover':hover,
+              'table-condensed':condensed
+            }
+          ]">
+        <tbody>
+            <tr>
+                 <th v-for="item in colums ">{{item}}</th>
+            </tr>
+            <tr v-for='item in data'>
+                  <td v-for='msg in item '>{{msg}}</td>
+              </tr>
+        </tbody>
+      </table>
+     `
+    })
+    new Vue({
+        el: '.app',
+        template: `
+            <div class='app' >
+                <Table :colums='colums'
+                :data='data' 
+                table
+                striped
+                bordered 
+                hover
+                condensed
+            />
+            </div>
+        `,
+        data() {
+            return {
+                colums: ['#', 'First Name', 'Last Name', 'Username'],
+                data: [
+                    ['1', 'Mark', 'Otto', '@mdo'],
+                    ['2', 'Jacob', 'Thornton', '@fat'],
+                    ['3', 'Larry', 'the Bird', '@twitter'],
+                ]
+
+            }
+        },
+
+    })
+</script>
+
+</html>

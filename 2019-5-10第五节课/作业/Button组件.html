@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="app"></div>
+</body>
+
+<script>
+    Vue.component('Button', {
+        props: {
+            type: {
+                type: String,
+                default: 'button' //按钮类型
+            },
+            color: {
+                type: String,
+                default: 'default', //按钮颜色 默认default 
+            },
+            size: String,
+            block: Boolean, //是否是块级 不传则是false 传了就是ture
+            active: Boolean, //是否激活状态
+            disabled: Boolean //是否禁用
+
+
+        },
+        template: `
+                     <button :type='type' :class="['btn','btn-'+color,'btn-'+size,{
+                        'btn-lg': size === 'lg',
+                        'btn-sm': size === 'sm',
+                        'btn-xs': size === 'xs',
+                        'btn-block':block,
+                        'active':active
+                    }]"
+                     :disabled ='disabled'
+                    >按钮</button>
+                `
+    })
+
+    const vm = new Vue({
+        el: '.app',
+        data() {
+            return {
+
+            }
+        },
+        template: `<div class='app'><Button color='danger' disabled active block size='lg' /></div>`,
+
+    })
+</script>
+
+</html>
