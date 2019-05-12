@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .app {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .app .container {
+            width: 350px;
+            height: 220px;
+            border: 1px #e8eaec solid;
+            margin: 20px auto;
+            border-radius: 5px;
+        }
+
+        .container:hover {
+            box-shadow: 0 1px 6px rgba(0, 0, 0, .2);
+            border-color: #eee;
+        }
+
+        .container .header {
+            border-bottom: 1px solid #e8eaec;
+            padding: 14px 16px;
+            line-height: 1;
+            text-align: center;
+
+        }
+
+        .container .header p,
+        .container .header h3 {
+            margin: 0;
+            padding: 0;
+            font-weight: normal;
+        }
+
+        .container .content p {
+            font-size: 14px;
+            text-indent: 16px;
+            padding: 5px;
+        }
+
+        .container .content span {
+            float: right;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app"></div>
+</body>
+<script>
+    Vue.component('Card', {
+        template: `
+           <template>
+                <div class='container'>
+                    <div class='header'>
+                        <slot name='title'></slot>
+                    </div>
+                    <div class='content'>
+                        <slot></slot>
+                        <slot name='author'></slot>
+                    </div>
+                </div>
+           </template> 
+        `
+
+    })
+    new Vue({
+        el: '.app',
+        template: `
+     
+        <div class='app'>
+            <Card>
+            <h3 slot='title'>标题</h3>
+            <p>人与人间的信任，就像是纸片，一旦破损，就不会再回到原来的样子。</p>
+            <span slot='author'>————xxx</span>
+            </Card>
+        </div>
+     `
+    })
+</script>
+
+</html>
