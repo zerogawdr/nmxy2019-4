@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .app {
+            padding: 0 20px;
+        }
+
+        .switch {
+            width: 44px;
+            height: 22px;
+            border: 1px red solid;
+            line-height: 20px;
+            border-radius: 22px;
+            border: 1px solid #ccc;
+            background-color: #ccc;
+            transition: background .3s ease-in;
+            cursor: pointer;
+            user-select: none;
+            /* transition: all .2s ease-in-out; */
+        }
+
+        .switch.active {
+            background-color: #2d8cf0;
+
+        }
+
+        .switch .switch_ball {
+            content: "";
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            border-radius: 18px;
+            background-color: #fff;
+            cursor: pointer;
+            transition: transform .3s ease-in;
+            animation: left .3s ease-in;
+        }
+
+        .switch.active .switch_ball {
+            animation: right .3s ease-in;
+            transform: translateX(22px)
+        }
+
+        @keyframes right {
+            0% {
+                width: 22px;
+                /* transform: translateX(0px) */
+            }
+
+            50% {
+                width: 29px;
+                /* transform: translateX(11px) */
+            }
+
+            100% {
+                width: 22px;
+                /* transform: translateX(22px); */
+            }
+
+        }
+
+        @keyframes left {
+            0% {
+                width: 22px;
+                /* transform: translateX(0px) */
+            }
+
+            50% {
+                width: 29px;
+                /* transform: translateX(11px) */
+            }
+
+            100% {
+                width: 22px;
+                /* transform: translateX(22px); */
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+
+    </div>
+</body>
+<script>
+    Vue.component('ISwitch', {
+        props: {
+            active: Boolean
+        },
+        template: `
+        <div class="app">
+        <div @click="$emit('change',!active)" :class="['switch',{'active':active}] ">
+            <div class="switch_ball ">
+            </div>
+        </div>
+        
+    </div>
+        `
+    })
+    new Vue({
+        el: '.app',
+        data() {
+            return {
+                active: false
+            }
+        },
+        template: `
+           <div class='app'>
+            <i-switch @change='change' :active='active' />
+            <span v-text="active?'开':'关'" ></span>
+           </div>
+         `,
+        methods: {
+            change(val) {
+                this.active = val
+            }
+        },
+    })
+</script>
+
+</html>
