@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0
+        }
+
+        li {
+            list-style: none;
+
+        }
+
+        .app {
+            width: 20%;
+            margin: 100px auto;
+
+        }
+
+        .app input {
+            text-indent: 5px;
+        }
+
+        .Suffix {
+            margin-top: 10px;
+            border: 1px #cccccc solid;
+            border-bottom: none;
+            border-top: none;
+            white-space: nowrap;
+            width: 180px;
+
+
+        }
+
+        .Suffix li {
+            border-bottom: 1px #cccccc solid;
+            padding: 3px 0;
+            font-size: 16px;
+            border-top: none;
+            width: inherit;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+        }
+
+        .active {
+            background: #79787894
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app"></div>
+</body>
+
+<script>
+    Vue.component('InputEmail', {
+        props: {
+            value: String
+        },
+        template: `
+        <div class="app">
+        <input @keydown.esc="value=''" @keydown.enter='checked' autofocus @keydown.up.prevent='emailIndex--'
+            @keydown.down='emailIndex++' v-model='value' type="text">
+        <ul v-if='value?true:false' class="Suffix">
+            <li @click='click(index)' :class='{active:emailIndex==index?true:false}' v-for='(item,index) in emailList'>
+                {{item}}</li>
+
+        </ul>
+    </div>
+        
+        `,
+        data() {
+            return {
+                email: [
+                    '@qq.com',
+                    "@gamil.com",
+                    "@163.com",
+                    '@sxa.com',
+                    '@sdqd.com'
+                ],
+                emailIndex: 0 //邮箱列表选中时默认下标
+            }
+        },
+        computed: {
+            emailList() {
+                if (this.value.match('@') || this.value == '') { //判断输入的值里包不包括@ 或者有没有输入值
+                    return [] //返回一个空数组
+                } else {
+                    const arr = [] //有输入吧数组中的每一项加上输入的值付给一个新数组返回出去
+                    this.email.forEach((item, index) => {
+                        arr[index] = this.value + item
+                    })
+                    return arr
+                }
+
+            }
+        },
+        watch: {
+            emailIndex(value) {
+                //监听下标数值的变化 value
+                if (value < 0) this.emailIndex = this.emailList.length - 1
+                if (value > this.emailList.length - 1) this.emailIndex = 0
+            }
+        },
+        methods: {
+            checked() {
+                // console.log(this.emailIndex) //键盘enter按下时判断邮箱列表是不是有数据 防止没输入时按enter出现问题
+                if (this.emailList.length == 0) {
+                    return
+                } else {
+                    this.value = this.emailList[this.emailIndex]
+                    this.emailIndex = 0
+                }
+
+            },
+            click(value) {
+                this.value = this.emailList[value]
+            },
+
+        },
+
+    })
+    new Vue({
+        el: '.app',
+        data() {
+            return {
+                value: ''
+            }
+        },
+        template: `
+          
+            <InputEmail v-model='value'  />
+         
+        `
+    })
+</script>
+
+</html>
