@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>vue组件切换</title>
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <tabs value="name1">
+      <tabpane label="标签一" name="name1">
+        <h2>尼玛的</h2>
+      </tabpane>
+      <tabpane label="标签二" name="name2">
+        <input value="写好了">
+      </tabpane>
+      <tabpane label="标签三" name="name3">c</tabpane>
+    </tabs>
+  </div>
+
+  <script>
+    Vue.component('tabs', {
+      created() {
+        var tabpanes = document.getElementsByTagName("tabpane")
+        for (var i = 0; i < tabpanes.length; i++) {
+          this.list.push({
+            label: tabpanes[i].getAttribute("label"),
+            name: tabpanes[i].getAttribute("name"),
+            html: tabpanes[i].innerHTML,
+          })
+        }
+        this.html = this.list[0].html
+      },
+      props: ['value'],
+      template: `<div>
+               <a v-for="item in list" :key="item.name" href="#"
+                 @click.prevent="changeComm(item)"
+                 :style="[style, item.name == value ? highlight : '']">{{item.label}}</a>
+               <div v-html="html"></div>
+             </div>`,
+      methods: {
+        changeComm(item) {
+          this.value = item.name
+          this.html = item.html
+        }
+      },
+      data() {
+        return {
+          list: [],
+          html: '',
+          style: {
+            boxSizing: 'border-box',
+            display: 'inline-block',
+            textDecoration: 'none',
+            color: 'blue',
+            width: '100px',
+            textAlign: 'center',
+          },
+          highlight: {
+            borderBottom: '2px solid blue'
+          }
+        }
+      }
+    })
+
+
+    new Vue({
+      el: '#app',
+      data: {
+
+      }
+    })
+  </script>
+</body>
+
+</html>

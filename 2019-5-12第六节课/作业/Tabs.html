@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .app {
+            width: 350px;
+            height: 200px;
+            border: 1px #e8eaec solid;
+            border-radius: 5px;
+            margin: 20px auto;
+            padding: 0 5px;
+        }
+
+        .app:hover {
+            box-shadow: 0 1px 6px rgba(0, 0, 0, .2);
+            border-color: #eee;
+        }
+
+        .app .header {
+            width: 100%;
+            box-sizing: border-box;
+            border-bottom: 1px solid #e8eaec;
+            line-height: 1;
+            position: relative;
+        }
+
+        .app .header a {
+            text-decoration: none;
+            color: black;
+            display: inline-block;
+            margin-right: 10px;
+            padding: 14px 16px;
+
+        }
+
+        .app .header a:hover {
+            color: #57a3f3
+        }
+
+        .app .header .tab-ink {
+            width: 74px;
+            height: 2px;
+            box-sizing: border-box;
+            background-color: #2d8cf0;
+            position: absolute;
+            /* left: 0; */
+            bottom: 0px;
+            z-index: 1;
+            transition: left .3s ease-in-out;
+            transform-origin: 0 0;
+        }
+
+        .app .header a.active {
+            color: #57a3f3
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app"></div>
+
+</body>
+
+<script>
+    const Tab1 = {
+        template: `
+            <div class='Tab1'>
+                标签一的内容
+                <input type='text' />
+           </div>
+        `
+    }
+    const Tab2 = {
+        template: `
+        <div class='Tab2'>
+                标签二的内容
+               
+                
+           </div>
+`
+    }
+    const Tab3 = {
+
+        template: `
+        <div class='Tab3'>
+               标签三的内容
+               
+           </div>
+`
+    }
+
+    new Vue({
+        el: '.app',
+        data() {
+            return {
+                list: [{
+                        name: '标签一',
+                        card: 'Tab1'
+                    },
+                    {
+                        name: '标签二',
+                        card: 'Tab2'
+                    },
+                    {
+                        name: '标签三',
+                        card: 'Tab3'
+                    },
+                ],
+                value: 'Tab1',
+                leftGap: 0,
+                leftIndex: ''
+            }
+        },
+        template: `
+            <div class='app'>
+                <div class='header'>
+                    <a href='#'   @click='changeCard(item,index)' v-for='(item,index) in list' >{{item.name}}</a>
+                    <div :style="{left:leftGap}" class='tab-ink' ></div>
+                </div>
+                <div class='content'>
+                    <keep-alive>
+                            <component :is='value' />
+                    </keep-alive>
+               </div>
+            </div>
+        `,
+        components: {
+            Tab1,
+            Tab2,
+            Tab3
+        },
+        methods: {
+            changeCard(item, num) {
+                this.value = item.card
+                this.leftGap = num * 85 + 'px'
+
+            }
+        },
+        // beforeUpdate() {
+        //     console.log('1')
+        //     let box = document.getElementsByClassName('content')[0].childNodes[0]
+        //     console.log(box)
+        //     box.style.transition = `all 2s  `
+        //     box.style.marginLeft = `-350px`;
+        //     box.style.color = 'red'
+
+        // },
+    })
+</script>
+
+</html>
