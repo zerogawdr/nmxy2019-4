@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            width: 100vw;
+            height: 100vh;
+            padding: 0;
+            margin: 0;
+            position: relative;
+            user-select: none;
+        }
+
+        .title {
+            position: absolute;
+            left: 65%;
+            top: 32%
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        /* 总的box开始 */
+        .select {
+            min-height: 300px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            box-sizing: border-box;
+        }
+
+        /* 选择框 */
+        .inputBox {
+            width: 200px;
+            height: 32px;
+            border: 1px solid #dcdee2;
+            cursor: pointer;
+            color: #515a6e;
+            font-size: 14px;
+            line-height: 32px;
+            font-size: 14px;
+            padding: 0 10px;
+            border-radius: 4px;
+
+            transition: all .5s
+        }
+
+        .inputBox i {
+            transform: rotate(0deg);
+            transition: all .5s
+        }
+
+        .inputBox i.active {
+            transform: rotate(180deg);
+            transition: all .5s
+        }
+
+        .select .inputMsg {
+            width: 180px;
+            display: inline-block;
+        }
+
+        .select .inputMsg input {
+            background: transparent;
+            border: none;
+            user-select: none;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .inputBox:hover {
+            border-color: #57a3f3;
+            /* box-shadow: 0 0 0 2px rgba(45, 140, 240, .2); */
+        }
+
+        .inputBox.checked {
+            border-color: #57a3f3;
+            box-shadow: 0 0 0 2px rgba(45, 140, 240, .2);
+        }
+
+        /* 下拉列表 */
+        .select .list {
+            color: #515a6e;
+            font-size: 14px;
+            border: 1px solid #dcdee2;
+            margin-top: 5px;
+            border-radius: 3px;
+            box-shadow: 2px 2px 5px #dcdee242;
+            opacity: 0;
+            /* display: none; */
+            transition: all .5s
+        }
+
+        .select .list.isShow {
+            opacity: 1;
+            /* display: block; */
+            transition: all .5s
+        }
+
+        .select .list li {
+            padding: 5px 16px;
+            cursor: pointer;
+
+        }
+
+        .select .list li.active {
+            background: #f3f3f3;
+        }
+
+        .select .list li:hover {
+            background: #f3f3f3;
+            transition: background .5s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+    </div>
+</body>
+<script>
+    Vue.component('Select', {
+        props: {
+            value: String
+        },
+        data() {
+            return {
+                isShow: false,
+                active: false,
+                checked: false,
+                msg: '',
+                list: [],
+                listIndex: 0
+
+
+            }
+        },
+        created() {
+            document.body.onclick = function (e) {
+                e.stopPropagation()
+                let aList = document.getElementsByClassName('list')[0]
+                aList.classList.remove("isShow");
+            }
+        },
+        mounted() {
+            //父组件访问子组件对象
+            const children = this.$children
+            console.log(children)
+            // 循环出子组件的数据 绑定到当前组件
+            if (Array.isArray(children)) {
+                const filter = children.filter(item => item.value)
+                this.list = filter;
+            }
+        },
+
+        template: `
+            <div>
+                <span class='title'> {{value}}</span>
+                <div  class='select' >  
+                    <div  @keydown.up.prevent='listIndex--' @keydown.esc="isShow=!isShow"  @keydown.enter.prevent='msg=list[listIndex].value,isShow=!isShow,value=list[listIndex].value'  @keydown.down.prevent='listIndex++' @click.stop='isShow=!isShow,active=!active,checked=!checked'  :class="['inputBox',{checked:checked}]">
+                        <span  class='inputMsg'>
+                          <span   v-show="msg==''"> <input     placeholder='请选择' /></span>
+                            <slot />
+                        </span>   
+                         <i :class="['fa fa-angle-down',{active:active}]"></i>   
+                    </div>
+                    <ul   :class="['list',{isShow:isShow}]">
+                        <li  :class='{active:listIndex==index?true:false}'  @click='msg=item.value,value=item.value' v-for='(item,index) in list'>
+                           {{ item.value}}
+                        </li>
+                    </ul>     
+                </div>
+            </div>
+        `,
+        methods: {},
+        watch: {
+            listIndex(val) {
+                //监听下标数值的变化 val
+                if (val < 0) this.listIndex = this.list.length - 1
+                if (val > this.list.length - 1) this.listIndex = 0
+            }
+        },
+
+    })
+    Vue.component('Option', {
+        props: {
+            value: String
+        },
+        computed: {
+            show() {
+                return this.$parent.msg
+            }
+        },
+        template: ` 
+                    <input   v-if='show===value' :value='show' />
+        `,
+        methods: {
+
+        },
+
+
+    })
+
+    new Vue({
+        el: '.app',
+        data() {
+            return {
+                cityList: [{
+                        value: '湖北',
+                        label: '湖北'
+                    },
+                    {
+                        value: '上海',
+                        label: '上海'
+                    },
+                    {
+                        value: '北京',
+                        label: '北京'
+                    },
+                    {
+                        value: '深圳',
+                        label: '深圳'
+                    },
+                    {
+                        value: '成都',
+                        label: '成都'
+                    },
+                    {
+                        value: '西安',
+                        label: '西安'
+                    }
+                ],
+                msg: ''
+            }
+        },
+        template: `
+            <Select v-model='msg' >
+                <Option  v-for="item in cityList" :value="item.value" :key="item.value" >{{ item.label }}</Option>
+            </Select>
+        `
+    })
+</script>
+
+</html>
