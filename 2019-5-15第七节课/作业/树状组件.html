@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+
+        li {
+            list-style: none
+        }
+
+        .tree {
+            width: 300px;
+        }
+
+        .tree li {
+            padding: 5px 0;
+        }
+
+        .title i {
+            transform: rotate(0deg);
+            transition: all .5s;
+            color: #009688;
+            cursor: pointer;
+        }
+
+        .title i.active {
+            transform: rotate(-90deg);
+            transition: all .5s;
+            cursor: pointer;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+
+    </div>
+
+    <script>
+        Vue.component('Tree', {
+            name: 'Tree',
+            props: {
+                data: Array,
+
+            },
+            data() {
+                return {
+
+                }
+            },
+            template: `
+            <ul class="tree">
+                <li v-for="(item,index) in data" :key='index'>
+                    <div class="title"  >
+                        <i  @click="item.expand = !item.expand"  v-if='Array.isArray(item.children)' :class="['fa fa-angle-down',{active:!item.expand}]"></i>   
+                        <i  class='fa fa-folder-open-o' v-if='Array.isArray(item.children)' > </i>
+                        <i style='color:#1E9FFF' class='fa fa-print' v-if="item.children instanceof Object==false "  > </i>
+                        姓名:<span>{{item.name}}</span> &nbsp  性别:<span>{{item.sex}}</span>
+                        <span @click='add(item)' >+</span> 
+                    </div>
+                    <Tree :data="item.children" v-if="Array.isArray(item.children)" v-show="item.expand" />
+                </li>
+            </ul>
+            `,
+            methods: {
+                add(a) {
+                    if (a.num == 0) {
+                        const arr = {
+                            name: '小张三',
+                            sex: '男',
+                            num: a.num + 1,
+                            expand: true,
+                            children: []
+                        }
+                        a.children.push(arr)
+                        console.log(a)
+                    } else if (a.num == 1) {
+                        const arr = {
+                            name: '小张三',
+                            sex: '男',
+                            num: a.num + 1,
+                            expand: true,
+                            children: []
+                        }
+                        a.children.push(arr)
+                    } else if (a.num == 2 && a.children) {
+                        const arr = {
+                            name: '小张三',
+                            sex: '男',
+                            num: a.num + 1,
+                            expand: true,
+                            children: []
+                        }
+                        a.children.push(arr)
+                    } else {
+                        alert('暂时不知道怎么加了')
+                    }
+
+                },
+
+            },
+
+        })
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                tree: [{
+                    name: '小张三',
+                    sex: '男',
+                    num: 0,
+                    expand: true,
+                    children: [{
+                            name: '小张三1',
+                            sex: '男',
+                            num: 1,
+                            expand: true,
+                            children: [{
+                                    name: '小小张三1',
+                                    expand: true,
+                                    num: 2,
+                                    sex: '男',
+                                },
+                                {
+                                    name: '小小张三2',
+                                    expand: true,
+                                    num: 2,
+                                    sex: '男',
+
+                                },
+                                {
+                                    name: '小小张三3',
+                                    expand: true,
+                                    num: 2,
+                                    sex: '男',
+                                }
+                            ]
+                        },
+                        {
+                            name: '小张三2',
+                            expand: true,
+                            sex: '男',
+                            num: 1,
+                            children: [{
+                                    name: '小小张三21',
+                                    expand: true,
+                                    num: 2,
+                                    sex: '男',
+                                },
+                                {
+                                    name: '小小张三22',
+                                    expand: true,
+                                    num: 2,
+                                    sex: '男',
+                                },
+                                {
+                                    name: '小小张三23',
+                                    expand: true,
+                                    num: 2,
+                                    sex: '男',
+                                }
+                            ]
+                        },
+                        {
+                            name: '小张三3',
+                            expand: true,
+                            sex: '男',
+                            num: 1,
+                            children: [{
+                                name: '小明',
+                                expand: true,
+                                num: 2,
+                                sex: '男',
+                                children: [{
+                                    name: '小芳',
+                                    num: 3,
+                                    expand: true,
+                                    sex: '女',
+                                }]
+                            }]
+                        }
+                    ]
+                }]
+            },
+            template: `
+            <Tree :data="tree" />
+            `
+        })
+    </script>
+</body>
+
+</html>
